@@ -4,9 +4,9 @@ use yii\db\Schema;
 use yii\db\Migration;
 
 /**
- * Class m150101_000000_create_file_table
+ * Class m150101_000000_create_i18n_tables
  */
-class m150101_000000_create_file_table extends Migration
+class m150101_000000_create_i18n_tables extends Migration
 {
     public function safeUp()
     {
@@ -17,21 +17,12 @@ class m150101_000000_create_file_table extends Migration
 
         /** @var \metalguardian\i18n\components\I18n $i18n */
         $i18n = Yii::$app->getI18n();
-        $config = $i18n->getMessageSourceConfig();
-
-        /** @var \yii\i18n\DbMessageSource $messageSource */
-        $messageSource = Yii::createObject($config);
-
-        if (!($messageSource instanceof \yii\i18n\DbMessageSource)) {
-            throw new \yii\base\InvalidConfigException('I18n message source have to be instance of \yii\i18n\DbMessageSource');
-        }
-
-        $sourceMessageTable = $messageSource->sourceMessageTable;
-        $messageTable = $messageSource->messageTable;
+        $sourceMessageTable = $i18n->getSourceMessageTable();
+        $messageTable = $i18n->getMessageTable();
 
         $this->createTable($sourceMessageTable, [
             'id' => Schema::TYPE_PK,
-            'category' => Schema::TYPE_STRING . '(32)',
+            'category' => Schema::TYPE_STRING,
             'message' => Schema::TYPE_TEXT
         ], $tableOptions);
 
@@ -49,19 +40,10 @@ class m150101_000000_create_file_table extends Migration
     {
         /** @var \metalguardian\i18n\components\I18n $i18n */
         $i18n = Yii::$app->getI18n();
-        $config = $i18n->getMessageSourceConfig();
+        $sourceMessageTable = $i18n->getSourceMessageTable();
+        $messageTable = $i18n->getMessageTable();
 
-        /** @var \yii\i18n\DbMessageSource $messageSource */
-        $messageSource = Yii::createObject($config);
-
-        if (!($messageSource instanceof \yii\i18n\DbMessageSource)) {
-            throw new \yii\base\InvalidConfigException('I18n message source have to be instance of \yii\i18n\DbMessageSource');
-        }
-
-        $sourceMessageTable = $messageSource->sourceMessageTable;
-        $messageTable = $messageSource->messageTable;
-
-        $this->dropTable($sourceMessageTable);
         $this->dropTable($messageTable);
+        $this->dropTable($sourceMessageTable);
     }
 }

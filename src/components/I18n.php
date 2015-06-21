@@ -2,6 +2,7 @@
 
 namespace metalguardian\i18n\components;
 
+use Yii;
 use yii\helpers\ArrayHelper;
 use yii\i18n\DbMessageSource;
 
@@ -53,7 +54,7 @@ class I18n extends \yii\i18n\I18N
     /**
      * @return array
      */
-    public function getMessageSourceConfig()
+    protected function getMessageSourceConfig()
     {
         $defaults = [
             'class' => DbMessageSource::className(),
@@ -66,4 +67,31 @@ class I18n extends \yii\i18n\I18N
         return ArrayHelper::merge($defaults, $this->messageSourceConfig);
     }
 
+    public function getSourceMessageTable()
+    {
+        $config = $this->getMessageSourceConfig();
+
+        /** @var \yii\i18n\DbMessageSource $messageSource */
+        $messageSource = Yii::createObject($config);
+
+        if (!($messageSource instanceof \yii\i18n\DbMessageSource)) {
+            throw new \yii\base\InvalidConfigException('I18n message source have to be instance of \yii\i18n\DbMessageSource');
+        }
+
+        return $messageSource->sourceMessageTable;
+    }
+
+    public function getMessageTable()
+    {
+        $config = $this->getMessageSourceConfig();
+
+        /** @var \yii\i18n\DbMessageSource $messageSource */
+        $messageSource = Yii::createObject($config);
+
+        if (!($messageSource instanceof \yii\i18n\DbMessageSource)) {
+            throw new \yii\base\InvalidConfigException('I18n message source have to be instance of \yii\i18n\DbMessageSource');
+        }
+
+        return $messageSource->messageTable;
+    }
 }

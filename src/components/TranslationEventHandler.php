@@ -2,6 +2,8 @@
 
 namespace metalguardian\i18n\components;
 
+use metalguardian\i18n\models\SourceMessage;
+use Yii;
 use yii\i18n\MissingTranslationEvent;
 
 /**
@@ -11,6 +13,6 @@ class TranslationEventHandler
 {
     public static function handleMissingTranslation(MissingTranslationEvent $event)
     {
-
+        
     }
 }
