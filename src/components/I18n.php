@@ -18,7 +18,7 @@ class I18n extends \yii\i18n\I18N
 
         $defaults = [
             'class' => DbMessageSource::className(),
-            'on missingTranslation' => ['metalguardian\i18n\TranslationEventHandler', 'handleMissingTranslation'],
+            'on missingTranslation' => ['metalguardian\i18n\components\TranslationEventHandler', 'handleMissingTranslation'],
         ];
         $config = ArrayHelper::merge($defaults, $this->messageSourceConfig);
 

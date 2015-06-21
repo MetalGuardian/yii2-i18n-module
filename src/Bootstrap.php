@@ -1,6 +1,6 @@
 <?php
 
-namespace metalguardian\i18n\src;
+namespace metalguardian\i18n;
 
 /**
  * Class Bootstrap
