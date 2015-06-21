@@ -14,10 +14,10 @@ class TranslationEventHandler
     public static function handleMissingTranslation(MissingTranslationEvent $event)
     {
         $driver = Yii::$app->getDb()->getDriverName();
-        $caseInsensitivePrefix = $driver === 'mysql' ? ' BINARY' : null;
+        $condition = $driver === 'mysql' ? '= BINARY' : '=';
         $sourceMessage = SourceMessage::find()
             ->where(['category' => $event->category])
-            ->andWhere(['=' . $caseInsensitivePrefix, 'message', $event->message])
+            ->andWhere([$condition, 'message', $event->message])
             ->one();
         if (!$sourceMessage) {
             SourceMessage::create($event->category, $event->message);
