@@ -18,7 +18,6 @@ class SourceMessageSearch extends SourceMessage
     public function rules()
     {
         return [
-            [['id'], 'integer'],
             [['category', 'message'], 'safe'],
         ];
     }
@@ -54,10 +53,6 @@ class SourceMessageSearch extends SourceMessage
             // $query->where('0=1');
             return $dataProvider;
         }
-
-        $query->andFilterWhere([
-            'id' => $this->id,
-        ]);
 
         $query->andFilterWhere(['like', 'category', $this->category])
             ->andFilterWhere(['like', 'message', $this->message]);

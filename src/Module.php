@@ -47,4 +47,14 @@ class Module extends \yii\base\Module
     {
         return \Yii::t('metalguardian/i18n', $message, $params, $language);
     }
+
+    /**
+     * Url to the translation controller
+     *
+     * @return array
+     */
+    public static function getUrl()
+    {
+        return ['/i18n/translation/index'];
+    }
 }

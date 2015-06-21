@@ -13,8 +13,6 @@ use yii\base\InvalidConfigException;
  * @property integer $id
  * @property string $language
  * @property string $translation
- *
- * @property SourceMessage $id0
  */
 class Message extends \yii\db\ActiveRecord
 {
@@ -38,8 +36,7 @@ class Message extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id', 'language'], 'required'],
-            [['id'], 'integer'],
+            [['language'], 'required'],
             [['translation'], 'string'],
             [['language'], 'string', 'max' => 16],
         ];
@@ -55,13 +52,5 @@ class Message extends \yii\db\ActiveRecord
             'language' => Module::t('Language'),
             'translation' => Module::t('Translation'),
         ];
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getId0()
-    {
-        return $this->hasOne(SourceMessage::className(), ['id' => 'id']);
     }
 }

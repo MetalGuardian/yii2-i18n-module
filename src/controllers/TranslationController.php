@@ -9,7 +9,6 @@ use metalguardian\i18n\models\SourceMessageSearch;
 use yii\base\Model;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
 
 /**
  * TranslationController implements the CRUD actions for SourceMessage model.
@@ -67,7 +66,7 @@ class TranslationController extends Controller
         if (($model = SourceMessage::findOne($id)) !== null) {
             return $model;
         } else {
-            throw new NotFoundHttpException('The requested page does not exist.');
+            throw new NotFoundHttpException(Module::t('The requested page does not exist.'));
         }
     }
 }

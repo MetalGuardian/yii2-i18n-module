@@ -1,5 +1,6 @@
 <?php
 
+use metalguardian\i18n\Module;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
@@ -7,10 +8,10 @@ use yii\widgets\ActiveForm;
 /* @var $form yii\widgets\ActiveForm */
 /* @var $model metalguardian\i18n\models\SourceMessage */
 
-$this->title = 'Update Source Message: ' . ' ' . $model->message;
-$this->params['breadcrumbs'][] = ['label' => 'Source Messages', 'url' => ['index']];
+$this->title = Module::t('Update Translation');
+$this->params['breadcrumbs'][] = ['label' => Module::t('Source Messages'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $model->message;
-$this->params['breadcrumbs'][] = 'Update';
+$this->params['breadcrumbs'][] = Module::t('Update');
 ?>
 <div class="source-message-update">
 
@@ -25,7 +26,7 @@ $this->params['breadcrumbs'][] = 'Update';
         <?php endforeach; ?>
 
         <div class="form-group">
-            <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+            <?= Html::submitButton(Module::t('Update'), ['class' => 'btn btn-primary']) ?>
         </div>
 
         <?php ActiveForm::end(); ?>

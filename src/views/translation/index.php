@@ -1,6 +1,7 @@
 <?php
 
 use metalguardian\i18n\models\SourceMessage;
+use metalguardian\i18n\Module;
 use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
@@ -9,7 +10,7 @@ use yii\widgets\Pjax;
 /* @var $searchModel metalguardian\i18n\models\SourceMessageSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Source Messages';
+$this->title = Module::t('Source Messages');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="source-message-index">

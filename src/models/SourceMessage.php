@@ -67,15 +67,6 @@ class SourceMessage extends \yii\db\ActiveRecord
     }
 
     /**
-     * @inheritdoc
-     * @return SourceMessageQuery
-     */
-    public static function find()
-    {
-        return new SourceMessageQuery(get_called_class());
-    }
-
-    /**
      * @return array
      */
     public static function getCategories()

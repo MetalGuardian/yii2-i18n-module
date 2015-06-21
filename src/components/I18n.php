@@ -2,6 +2,7 @@
 
 namespace metalguardian\i18n\components;
 
+use metalguardian\i18n\Module;
 use Yii;
 use yii\helpers\ArrayHelper;
 use yii\i18n\DbMessageSource;
@@ -60,7 +61,7 @@ class I18n extends \yii\i18n\I18N
             'class' => DbMessageSource::className(),
             'on missingTranslation' => [
                 'metalguardian\i18n\components\TranslationEventHandler',
-                'handleMissingTranslation'
+                'handleMissingTranslation',
             ],
         ];
 
@@ -75,7 +76,7 @@ class I18n extends \yii\i18n\I18N
         $messageSource = Yii::createObject($config);
 
         if (!($messageSource instanceof \yii\i18n\DbMessageSource)) {
-            throw new \yii\base\InvalidConfigException('I18n message source have to be instance of \yii\i18n\DbMessageSource');
+            throw new \yii\base\InvalidConfigException(Module::t('I18n message source have to be instance of \yii\i18n\DbMessageSource'));
         }
 
         return $messageSource->sourceMessageTable;
@@ -89,7 +90,7 @@ class I18n extends \yii\i18n\I18N
         $messageSource = Yii::createObject($config);
 
         if (!($messageSource instanceof \yii\i18n\DbMessageSource)) {
-            throw new \yii\base\InvalidConfigException('I18n message source have to be instance of \yii\i18n\DbMessageSource');
+            throw new \yii\base\InvalidConfigException(Module::t('I18n message source have to be instance of \yii\i18n\DbMessageSource'));
         }
 
         return $messageSource->messageTable;
