@@ -20,6 +20,13 @@ class I18n extends \yii\i18n\I18N
     public $messageSourceConfig = [];
 
     /**
+     * Handle missing translations or not
+     *
+     * @var bool
+     */
+    public $handleMissing = true;
+
+    /**
      * List of categories to handle by message source. If not an array category * will be used to handle all sources
      *
      * @var array
@@ -29,10 +36,12 @@ class I18n extends \yii\i18n\I18N
         '*',
     ];
 
-    public $override = false;
+    public $override = true;
 
     public function init()
     {
+        parent::init();
+
         $config = $this->getMessageSourceConfig();
 
         if (is_array($this->only)) {
@@ -48,8 +57,6 @@ class I18n extends \yii\i18n\I18N
                 ];
             }
         }
-
-        parent::init();
     }
 
     /**
@@ -59,11 +66,13 @@ class I18n extends \yii\i18n\I18N
     {
         $defaults = [
             'class' => DbMessageSource::className(),
-            'on missingTranslation' => [
+        ];
+        if ($this->handleMissing) {
+            $defaults['on missingTranslation'] = [
                 'metalguardian\i18n\components\TranslationEventHandler',
                 'handleMissingTranslation',
-            ],
-        ];
+            ];
+        }
 
         return ArrayHelper::merge($defaults, $this->messageSourceConfig);
     }
