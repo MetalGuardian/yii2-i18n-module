@@ -50,7 +50,8 @@ class SourceMessageSearch extends SourceMessage
 
         $columns[] = [
             'attribute' => 'category',
-            'filter' => \yii\helpers\ArrayHelper::map(SourceMessage::getCategories(), 'category', 'category')
+            'filter' => \yii\helpers\ArrayHelper::map(SourceMessage::getCategories(), 'category', 'category'),
+            'options' => ['class' => 'col-sm-1'],
         ];
 
         return $columns;
