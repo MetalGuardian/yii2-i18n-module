@@ -49,17 +49,6 @@ class SourceMessage extends \yii\db\ActiveRecord
     /**
      * @inheritdoc
      */
-    public function rules()
-    {
-        return [
-            [['message'], 'string'],
-            [['category'], 'string', 'max' => 255],
-        ];
-    }
-
-    /**
-     * @inheritdoc
-     */
     public function attributeLabels()
     {
         return [
@@ -74,13 +63,58 @@ class SourceMessage extends \yii\db\ActiveRecord
      */
     public function getMessages()
     {
-        return $this->hasMany(Message::className(), ['id' => 'id']);
+        return $this->hasMany(Message::className(), ['id' => 'id'])->indexBy('language');
     }
 
+    /**
+     * @inheritdoc
+     * @return SourceMessageQuery
+     */
     public static function find()
     {
         return new SourceMessageQuery(get_called_class());
     }
 
+    /**
+     * @return array
+     */
+    public static function getCategories()
+    {
+        return SourceMessage::find()->select('category')->distinct('category')->asArray()->all();
+    }
 
+    /**
+     * Populate messages
+     *
+     * @throws InvalidConfigException
+     */
+    public function populateMessages()
+    {
+        /** @var Module $module */
+        $module = Module::getInstance();
+        if (!$module) {
+            throw new InvalidConfigException(Module::t('You need to configure \metalguardian\i18n\Module'));
+        }
+        $messages = [];
+        foreach ($module->languages as $language) {
+            if (!isset($this->messages[$language])) {
+                $message = new Message();
+                $message->language = $language;
+                $messages[$language] = $message;
+            } else {
+                $messages[$language] = $this->messages[$language];
+            }
+        }
+        $this->populateRelation('messages', $messages);
+    }
+
+    /**
+     * Link messages
+     */
+    public function linkMessages()
+    {
+        foreach ($this->messages as $message) {
+            $this->link('messages', $message);
+        }
+    }
 }
