@@ -28,6 +28,10 @@ Usage
 Once the extension is installed, simply use it in your code by  :
 
 ```php
+./yii migrate --migrationPath=@vendor/metalguardian/yii2-i18n-module/src/migrations
+```
+
+```php
 'components' => [
     // ...
     'i18n' => [
