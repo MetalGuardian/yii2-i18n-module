@@ -9,8 +9,14 @@ use yii\base\InvalidConfigException;
  */
 class Module extends \yii\base\Module
 {
+    /**
+     * @var
+     */
     public $languages;
 
+    /**
+     * @throws InvalidConfigException
+     */
     public function init()
     {
         parent::init();
@@ -27,7 +33,6 @@ class Module extends \yii\base\Module
             throw new InvalidConfigException('\metalguardian\i18n\Module::languages have to contains at least 1 item.');
         }
     }
-
 
     /**
      * @inheritdoc

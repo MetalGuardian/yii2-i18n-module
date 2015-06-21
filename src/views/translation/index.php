@@ -21,23 +21,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
-        'columns' => [
-            [
-                'attribute' => 'id',
-                'filter' => false
-            ],
-            [
-                'attribute' => 'message',
-                'format' => 'raw',
-                'value' => function (SourceMessage $model) {
-                    return Html::a(Html::encode($model->message), ['update', 'id' => $model->id], ['data-pjax' => 0]);
-                }
-            ],
-            [
-                'attribute' => 'category',
-                'filter' => \yii\helpers\ArrayHelper::map(SourceMessage::getCategories(), 'category', 'category')
-            ],
-        ],
+        'columns' => $searchModel::getColumns(),
     ]); ?>
     <?php Pjax::end(); ?>
 </div>
