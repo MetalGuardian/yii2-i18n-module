@@ -19,6 +19,6 @@
         }
     },
     "extra": {
-        "bootstrap": "metalguardian\\i18n\\Module"
+        "bootstrap": "metalguardian\\i18n\\Bootstrap"
     }
 }

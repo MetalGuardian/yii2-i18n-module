@@ -5,7 +5,7 @@ namespace metalguardian\i18n;
 /**
  * Class Module
  */
-class Module extends \yii\base\Module implements \yii\base\BootstrapInterface
+class Module extends \yii\base\Module
 {
 
     /**
@@ -25,13 +25,5 @@ class Module extends \yii\base\Module implements \yii\base\BootstrapInterface
     public static function t($message, $params = [], $language = null)
     {
         return \Yii::t('metalguardian/i18n', $message, $params, $language);
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function bootstrap($app)
-    {
-
     }
 }
