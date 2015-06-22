@@ -37,13 +37,16 @@ class SourceMessage extends \yii\db\ActiveRecord
      *
      * @param $category
      * @param $message
+     * @return SourceMessage
      */
     public static function create($category, $message)
     {
         $sourceMessage = new SourceMessage;
         $sourceMessage->category = $category;
         $sourceMessage->message = $message;
-        $sourceMessage->save(false);
+        $sourceMessage->save();
+
+        return $sourceMessage;
     }
 
     /**
@@ -81,13 +84,13 @@ class SourceMessage extends \yii\db\ActiveRecord
      */
     public function populateMessages()
     {
-        /** @var Module $module */
-        $module = Module::getInstance();
-        if (!$module) {
-            throw new InvalidConfigException(Module::t('You need to configure \metalguardian\i18n\Module'));
+        /** @var \metalguardian\i18n\components\I18n $i18n */
+        $i18n = Yii::$app->getI18n();
+        if (!($i18n instanceof I18n)) {
+            throw new InvalidConfigException(Module::t('I18n component have to be instance of metalguardian\i18n\components\I18n'));
         }
         $messages = [];
-        foreach ($module->languages as $language) {
+        foreach ($i18n->languages as $language) {
             if (!isset($this->messages[$language])) {
                 $message = new Message();
                 $message->language = $language;
@@ -107,5 +110,22 @@ class SourceMessage extends \yii\db\ActiveRecord
         foreach ($this->messages as $message) {
             $this->link('messages', $message);
         }
+    }
+
+    /**
+     * @param string $category
+     * @param string $message
+     * @return null|SourceMessage
+     */
+    public static function get($category, $message)
+    {
+        $driver = Yii::$app->getDb()->getDriverName();
+        $condition = $driver === 'mysql' ? '= BINARY' : '=';
+        $sourceMessage = SourceMessage::find()
+            ->where(['category' => $category])
+            ->andWhere([$condition, 'message', $message])
+            ->one();
+
+        return $sourceMessage;
     }
 }

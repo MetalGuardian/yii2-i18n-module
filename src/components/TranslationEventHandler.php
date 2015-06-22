@@ -11,14 +11,14 @@ use yii\i18n\MissingTranslationEvent;
  */
 class TranslationEventHandler
 {
+    /**
+     * Handle missing translations
+     *
+     * @param MissingTranslationEvent $event
+     */
     public static function handleMissingTranslation(MissingTranslationEvent $event)
     {
-        $driver = Yii::$app->getDb()->getDriverName();
-        $condition = $driver === 'mysql' ? '= BINARY' : '=';
-        $sourceMessage = SourceMessage::find()
-            ->where(['category' => $event->category])
-            ->andWhere([$condition, 'message', $event->message])
-            ->one();
+        $sourceMessage = SourceMessage::get($event->category, $event->message);
         if (!$sourceMessage) {
             SourceMessage::create($event->category, $event->message);
         }

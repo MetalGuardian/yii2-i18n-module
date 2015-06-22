@@ -10,31 +10,6 @@ use yii\base\InvalidConfigException;
 class Module extends \yii\base\Module
 {
     /**
-     * @var
-     */
-    public $languages;
-
-    /**
-     * @throws InvalidConfigException
-     */
-    public function init()
-    {
-        parent::init();
-
-        if ($this->languages instanceof \Closure) {
-            $this->languages = call_user_func($this->languages);
-        }
-
-        if (!is_array($this->languages)) {
-            throw new InvalidConfigException('\metalguardian\i18n\Module::languages have to be array.');
-        }
-
-        if (empty($this->languages)) {
-            throw new InvalidConfigException('\metalguardian\i18n\Module::languages have to contains at least 1 item.');
-        }
-    }
-
-    /**
      * @inheritdoc
      */
     public $controllerNamespace = 'metalguardian\i18n\controllers';

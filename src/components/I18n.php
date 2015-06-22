@@ -4,6 +4,7 @@ namespace metalguardian\i18n\components;
 
 use metalguardian\i18n\Module;
 use Yii;
+use yii\base\InvalidConfigException;
 use yii\helpers\ArrayHelper;
 use yii\i18n\DbMessageSource;
 
@@ -36,11 +37,38 @@ class I18n extends \yii\i18n\I18N
         '*',
     ];
 
+    /**
+     * Override existing source messages or not
+     *
+     * @var bool
+     */
     public $override = true;
 
+    /**
+     * List of supported languages
+     *
+     * @var
+     */
+    public $languages;
+
+    /**
+     * @throws InvalidConfigException
+     */
     public function init()
     {
         parent::init();
+
+        if ($this->languages instanceof \Closure) {
+            $this->languages = call_user_func($this->languages);
+        }
+
+        if (!is_array($this->languages)) {
+            throw new InvalidConfigException('\metalguardian\i18n\components\I18n::languages have to be array.');
+        }
+
+        if (empty($this->languages)) {
+            throw new InvalidConfigException('\metalguardian\i18n\components\I18n::languages have to contains at least 1 item.');
+        }
 
         $config = $this->getMessageSourceConfig();
 

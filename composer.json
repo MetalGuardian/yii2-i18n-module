@@ -17,5 +17,8 @@
         "psr-4": {
             "metalguardian\\i18n\\": "src"
         }
+    },
+    "extra": {
+        "bootstrap": "metalguardian\\i18n\\Bootstrap"
     }
 }

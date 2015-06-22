@@ -48,6 +48,8 @@ How to configure component:
         ],
         // do you want to override already configured message sources?
         'override' => true,
+         // a list of languages
+        'languages' => ['en', 'uk', 'fr', 'es'],
     ],
 ],
 ```
@@ -61,6 +63,7 @@ You can handle ALL message sources like this:
         'class' => '\metalguardian\i18n\components\I18n',
         'only' => false,
         'override' => true,
+        'languages' => ['en', 'uk', 'fr', 'es'],
     ],
 ],
 ```
@@ -73,17 +76,49 @@ If you don't have message tables in your database yet, you may use migrations:
 ./yii migrate --migrationPath=@vendor/metalguardian/yii2-i18n-module/src/migrations
 ```
 
-In admin application you need to configure translation module and setup a list of languages:
+In admin application you need to configure translation module:
 
 ```php
 'modules' => [
     // ...
     'i18n' => [
         'class' => 'metalguardian\i18n\Module',
-        'languages' => ['en', 'uk', 'fr', 'es'],
     ],
 ],
 ```
 
 If you set 'i18n' name to the module, you can simply call \metalguardian\i18n\Module::getUrl() to get
 link to the translation controller
+
+Using this module you can export and import translations from and into database:
+
+Export all messages from database:
+```php
+./yii message/export ./common/messages
+```
+
+Export only `app` category from database:
+```php
+./yii message/export ./common/messages app
+```
+
+Import translations from all files in ./vendor/yiisoft/yii2/messages/. Script will ask you some questions,
+like category message and language for the importing file
+```php
+./yii message/import ./vendor/yiisoft/yii2/messages/
+```
+
+You can add `override` argument to override existing translations with translations stored in files
+```php
+./yii message/import ./vendor/yiisoft/yii2/messages/   1
+```
+
+Or you can import only one file. Than you need to specify all parameters as arguments:
+```php
+./yii message/import-file ./vendor/yiisoft/yii2/messages/uk/yii.php yii uk
+```
+
+And if you need override existing translations:
+```php
+./yii message/import-file ./vendor/yiisoft/yii2/messages/uk/yii.php yii uk 1
+```

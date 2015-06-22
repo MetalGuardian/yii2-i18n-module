@@ -2,6 +2,7 @@
 
 namespace metalguardian\i18n\models;
 
+use metalguardian\i18n\components\I18n;
 use metalguardian\i18n\Module;
 use Yii;
 use yii\base\InvalidConfigException;
@@ -33,12 +34,12 @@ class SourceMessageSearch extends SourceMessage
             ],
         ];
 
-        /** @var Module $module */
-        $module = Module::getInstance();
-        if (!$module) {
-            throw new InvalidConfigException(Module::t('You need to configure \metalguardian\i18n\Module'));
+        /** @var \metalguardian\i18n\components\I18n $i18n */
+        $i18n = Yii::$app->getI18n();
+        if (!($i18n instanceof I18n)) {
+            throw new InvalidConfigException(Module::t('I18n component have to be instance of metalguardian\i18n\components\I18n'));
         }
-        foreach ($module->languages as $language) {
+        foreach ($i18n->languages as $language) {
             $columns[] = [
                 'label' => Module::t('Translation[{language}]', ['language' => $language]),
                 'value' => function (SourceMessage $data) use ($language) {
