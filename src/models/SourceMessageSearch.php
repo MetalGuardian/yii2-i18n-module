@@ -107,13 +107,13 @@ class SourceMessageSearch extends SourceMessage
         $query->andFilterWhere(['like', 'category', $this->category])
             ->andFilterWhere(['like', 'message', $this->message]);
 
-        $translations = $this->formatTranslations($this->translation);
+        $translations = array_filter((array) $this->translation);
 
         $or = ['or'];
-        foreach ($translations as $key => $texts) {
+        foreach ($translations as $key => $text) {
             $or[] = ['and',
                 ['message.language' => $key],
-                ['or like', 'message.translation', $texts]
+                ['or like', 'message.translation', $text]
             ];
         }
         $query->andWhere($or);
