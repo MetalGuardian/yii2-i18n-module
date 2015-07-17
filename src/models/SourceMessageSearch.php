@@ -15,11 +15,13 @@ use yii\helpers\Html;
  */
 class SourceMessageSearch extends SourceMessage
 {
+    public $translation;
+
     /**
      * @return array
      * @throws InvalidConfigException
      */
-    public static function getColumns()
+    public function getColumns()
     {
         $columns = [
             [
@@ -41,11 +43,12 @@ class SourceMessageSearch extends SourceMessage
         }
         foreach ($i18n->languages as $language) {
             $columns[] = [
+                'attribute' => 'translation',
                 'label' => Module::t('Translation[{language}]', ['language' => $language]),
                 'value' => function (SourceMessage $data) use ($language) {
                     return isset($data->messages[$language]) ? Html::encode($data->messages[$language]->translation) : null;
                 },
-                'filter' => false,
+                'filter' => Html::activeTextInput($this, 'translation[' . $language . ']', ['class' => 'form-control']),
             ];
         }
 
@@ -64,7 +67,7 @@ class SourceMessageSearch extends SourceMessage
     public function rules()
     {
         return [
-            [['category', 'message'], 'safe'],
+            [['category', 'message', 'translation'], 'safe'],
         ];
     }
 
@@ -104,6 +107,32 @@ class SourceMessageSearch extends SourceMessage
         $query->andFilterWhere(['like', 'category', $this->category])
             ->andFilterWhere(['like', 'message', $this->message]);
 
+        $translations = $this->formatTranslations($this->translation);
+
+        $or = ['or'];
+        foreach ($translations as $key => $texts) {
+            $or[] = ['and',
+                ['message.language' => $key],
+                ['or like', 'message.translation', $texts]
+            ];
+        }
+        $query->andWhere($or);
+
+
         return $dataProvider;
+    }
+
+    private function formatTranslations($translation)
+    {
+        $translation = array_filter((array) $translation);
+        $data = [];
+        foreach ($translation as $key =>  $one) {
+            $words = preg_split('/[\s,]+/', $one);
+            foreach ($words as $word) {
+                $data[$key][] = $word;
+            }
+        }
+
+        return $data;
     }
 }
