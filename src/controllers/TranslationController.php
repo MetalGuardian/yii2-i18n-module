@@ -2,6 +2,7 @@
 
 namespace metalguardian\i18n\controllers;
 
+use metalguardian\i18n\models\SourceMessageForm;
 use metalguardian\i18n\Module;
 use Yii;
 use metalguardian\i18n\models\SourceMessage;
@@ -32,7 +33,7 @@ class TranslationController extends Controller
 
     /**
      * Updates an existing SourceMessage model.
-     * If update is successful, the browser will be redirected to the 'view' page.
+     * If update is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
      */
@@ -50,6 +51,24 @@ class TranslationController extends Controller
         }
 
         return $this->render('update', [
+            'model' => $model,
+        ]);
+    }
+
+    /**
+     * Create SourceMessage item.
+     * If update is successful, the browser will be redirected to the 'index' page.
+     * @return mixed
+     */
+    public function actionCreate()
+    {
+        $model = new SourceMessageForm();
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['index']);
+        }
+
+        return $this->render('create', [
             'model' => $model,
         ]);
     }
